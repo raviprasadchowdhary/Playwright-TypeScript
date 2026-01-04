@@ -1,0 +1,22 @@
+{
+  "name": "playwright-typescript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raviprasadchowdhary/Playwright-TypeScript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raviprasadchowdhary/Playwright-TypeScript/issues"
+  },
+  "homepage": "https://github.com/raviprasadchowdhary/Playwright-TypeScript#readme",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^25.0.3"
+  }
+}
