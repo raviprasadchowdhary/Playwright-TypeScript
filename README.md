@@ -40,6 +40,30 @@ See the browser while tests are running:
 npx playwright test --project=chromium --headed
 ```
 
+### Run Tests with UI Mode
+
+Interactive UI mode for running and debugging tests:
+
+```bash
+npx playwright test --ui
+```
+
+### Run Tests with Trace
+
+Record traces for debugging:
+
+```bash
+npx playwright test --project=chromium --trace on
+```
+
+### Debug Tests
+
+Run tests in debug mode with Playwright Inspector:
+
+```bash
+npx playwright test --project=chromium --debug
+```
+
 ### Run Specific Test File
 
 Execute a specific test file:
