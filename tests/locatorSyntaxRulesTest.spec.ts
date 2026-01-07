@@ -45,6 +45,12 @@ test('locator syntax rules', async ({page}) => {
 
     // by xpath (NOT RECOMMENDED, because it is brittle and less readable, but still possible, if needed, e.g. for legacy apps, etc.)
     page.locator('//input[@id="inputEmail1"]')
+
+    // by partial text match
+    page.locator(':text("Using")')
+
+    // by exact text match
+    page.locator(':text-is("Using the Grid")')
 })
 
 // ******************* Teardown hooks *******************
