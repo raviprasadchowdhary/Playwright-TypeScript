@@ -18,6 +18,8 @@ test('', async ({page}) => {
     await UsingTheGridCard.getByText('Option 2').click()
     await UsingTheGridCard.getByRole('button', {name: 'Sign in'}).click()
 
+    await expect(EmailInput).toHaveValue('Raviprasad@gmail.com')
+
 })
 
 // ******************* Teardown hooks *******************
