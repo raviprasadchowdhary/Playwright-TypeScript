@@ -23,6 +23,20 @@ test('general assertions', async ({page}) => {
     expect(value).not.toBe(4)
 })
 
+test('locator assertions', async ({page}) => {
+    const BasicFormcard = page.locator('nb-card').filter({hasText: 'Basic form'})
+    const BasicFormCardButton = BasicFormcard.getByRole('button')
+    // Locator assertions
+    await expect(BasicFormCardButton).toContainText('Submit')
+    await expect(BasicFormCardButton).toBeVisible()
+    await expect(BasicFormCardButton).toBeEnabled()
+    await expect(BasicFormCardButton).toHaveCount(1)
+
+    // Negative locator assertions
+    await expect(BasicFormCardButton).not.toHaveText('Cancel')
+
+})
+
 // ****************** Teardown hooks *******************
 test.afterEach(async ({page}) => {
     await page.close()
