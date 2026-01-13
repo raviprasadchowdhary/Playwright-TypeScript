@@ -37,6 +37,25 @@ test('locator assertions', async ({page}) => {
 
 })
 
+test('soft assertions', async ({page}) => {
+    const value = 5
+    // soft assertions
+    // general soft assertions
+    expect.soft(value).toBeGreaterThan(5)
+    expect.soft(value).toBeLessThan(5)
+    expect.soft(value).toEqual(5)
+    expect.soft(value).not.toEqual(5)
+    expect.soft(value).toBe(5)
+
+    // locator soft assertions
+    const BasicFormcard = page.locator('nb-card').filter({hasText: 'Basic form'})
+    const BasicFormCardButton = BasicFormcard.getByRole('button')
+    await expect.soft(BasicFormCardButton).toContainText('Submit1')
+    await expect.soft(BasicFormCardButton).toBeVisible()
+    await expect.soft(BasicFormCardButton).toBeDisabled()
+    await expect.soft(BasicFormCardButton).toHaveCount(1)
+})
+
 // ****************** Teardown hooks *******************
 test.afterEach(async ({page}) => {
     await page.close()
