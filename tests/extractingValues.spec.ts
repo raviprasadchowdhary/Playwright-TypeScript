@@ -44,6 +44,20 @@ test('extract input field values', async ({page}) => {
     expect(PasswordInput).toHaveValue('Raviprasad@123')
 })
 
+test('extract attribute value', async ({page}) => {
+    const BasicFormcard = page.locator('nb-card').filter({hasText: 'Basic form'})
+    const EmailInput = BasicFormcard.getByPlaceholder('Email')
+
+    const EmailInputPlaceHolder = await EmailInput.getAttribute('placeholder')
+    await EmailInput.fill('Raviprasad@gmail.com')
+    const EmailInputValue = await EmailInput.inputValue()
+    const EmailInputPlaceHolderAfterFill = await EmailInput.getAttribute('placeholder')
+
+    expect(EmailInputPlaceHolderAfterFill).toEqual(EmailInputPlaceHolder)
+    expect(EmailInputValue).toEqual('Raviprasad@gmail.com')
+
+})
+
 // **************** Teardown hooks *******************
 test.afterEach(async ({page}) =>{
     await page.close()
