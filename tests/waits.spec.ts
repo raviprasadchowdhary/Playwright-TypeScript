@@ -15,6 +15,14 @@ test('auto waiting', async ({page}) => {
     expect(message).toHaveText('Data loaded with AJAX get request.')
 })
 
+test('manual waiting', async ({page}) => {
+    const button = page.getByRole('button', {name: 'Button Triggering AJAX Request'})
+    const message = page.locator('.bg-success')
+    await button.click()
+    
+    await expect(message).toBeVisible({timeout: 20000})
+    await expect(message).toHaveText('Data loaded with AJAX get request.')
+})
 
 // ****************** Teardown hooks *******************
 test.afterEach(async ({page}) => {
