@@ -48,8 +48,19 @@ test('alternative waiting - waitForResponse', async ({page}) => {
     const message = page.locator('.bg-success')
     await button.click()
     
-    // wait for element to be visible
+    // wait for response of the ajax request
     await page.waitForResponse('http://uitestingplayground.com/ajaxdata')
+    await expect(message).toHaveText('Data loaded with AJAX get request.')
+    
+})
+
+test('alternative waiting - waitForLoadState', async ({page}) => {
+    const button = page.getByRole('button', {name: 'Button Triggering AJAX Request'})
+    const message = page.locator('.bg-success')
+    await button.click()
+    
+    // wait for load state to be networkidle (NOT RECOMMENDED, as it may lead to flaky tests)
+    await page.waitForLoadState('networkidle')
     await expect(message).toHaveText('Data loaded with AJAX get request.')
     
 })
