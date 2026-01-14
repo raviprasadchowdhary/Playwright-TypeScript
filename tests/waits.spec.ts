@@ -43,6 +43,17 @@ test('alternative waiting - waitForSelector', async ({page}) => {
     
 })
 
+test('alternative waiting - waitForResponse', async ({page}) => {
+    const button = page.getByRole('button', {name: 'Button Triggering AJAX Request'})
+    const message = page.locator('.bg-success')
+    await button.click()
+    
+    // wait for element to be visible
+    await page.waitForResponse('http://uitestingplayground.com/ajaxdata')
+    await expect(message).toHaveText('Data loaded with AJAX get request.')
+    
+})
+
 // ****************** Teardown hooks *******************
 test.afterEach(async ({page}) => {
     await page.close()
