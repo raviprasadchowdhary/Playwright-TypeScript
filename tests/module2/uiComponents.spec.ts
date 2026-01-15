@@ -23,8 +23,24 @@ test.describe('Form Layouts page', () => {
 
         await EmailUsingTheGrid.clear() // clearing input field
         expect(await EmailUsingTheGrid.inputValue()).toEqual('')  // general assertion
-        
+
         await EmailUsingTheGrid.pressSequentially(EmailInput, {delay: 50})  // typing with delay
         await expect(EmailUsingTheGrid).toHaveValue(EmailInput)    // locator assertion
         })
+
+    test('radio button', async ({page}) => {
+        const UsingTheGridCard = page.locator('nb-card').filter({hasText: 'Using the Grid'})
+        const RadioOption1 = UsingTheGridCard.getByRole('radio', {name: 'Option 1'})
+        const RadioOption2 = UsingTheGridCard.getByRole('radio', {name: 'Option 2'})
+
+        await RadioOption1.check({force: true})
+        await expect(RadioOption1).toBeChecked()    // locator assertion; toBeChecked
+        await expect(RadioOption2).not.toBeChecked()    // locator assertion; not.toBeChecked
+        
+        await RadioOption2.check({force: true})
+        const RadioOption2Status = await RadioOption2.isChecked()
+        const RadioOption1Status = await RadioOption1.isChecked()
+        await expect(RadioOption2Status).toBeTruthy()   // general assertion; toBeTruthy
+        await expect(RadioOption1Status).toBeFalsy()    // general assertion; toBeFalsy
+    })
 })
