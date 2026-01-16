@@ -48,3 +48,39 @@ test.describe('Form Layouts page', () => {
         await expect(RadioOption1Status).toBeFalsy()    // general assertion; toBeFalsy
     })
 })
+
+test.describe('Modal & Overlays - Toastr', () => {
+    test.beforeEach(async ({page}) => {
+        page.getByText('Modal & Overlays').click()
+        page.getByText('Toastr').click()        
+    })
+
+    test('checkboxes', async ({page}) => {
+        const CheckBox1 = page.getByRole('checkbox', {name: 'Hide on click'})
+        const CheckBox2 = page.getByRole('checkbox', {name: 'Prevent arising of duplicate toast'})
+        const CheckBox3 = page.getByRole('checkbox', {name: 'Show toast with icon'})
+
+        await CheckBox1.check({force: true})
+        await CheckBox2.check({force: true})
+        await CheckBox3.check({force: true})
+        await expect(CheckBox1).toBeChecked()   // locator assertion; toBeChecked
+        await expect(CheckBox2).toBeChecked()   // locator assertion; toBeChecked
+        await expect(CheckBox3).toBeChecked()   // locator assertion; toBeChecked
+
+        await CheckBox1.uncheck({force: true})
+        await CheckBox2.uncheck({force: true})
+        await CheckBox3.uncheck({force: true})
+        expect(await CheckBox1.isChecked()).toBeFalsy() // general assertion; toBeFalsy
+        expect(await CheckBox2.isChecked()).toBeFalsy() // general assertion; toBeFalsy
+        expect(await CheckBox3.isChecked()).toBeFalsy() // general assertion; toBeFalsy
+
+        const AllCheckBoxes = page.getByRole('checkbox')
+        const AllCheckBoxesList = await AllCheckBoxes.all()
+        for(const checkbox of AllCheckBoxesList){
+            await checkbox.check({force: true})
+        }
+        for(const checkbox of AllCheckBoxesList){
+            await expect(checkbox).toBeChecked()   // locator assertion; toBeChecked
+        }
+    })
+})
