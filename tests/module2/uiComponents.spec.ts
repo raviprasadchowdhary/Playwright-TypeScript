@@ -84,3 +84,24 @@ test.describe('Modal & Overlays - Toastr', () => {
         }
     })
 })
+
+test('list & dropdown', async ({page}) => {
+        const Header = page.locator('nb-layout-header')
+        const Dropdown = page.locator('ngx-header nb-select')
+        const DropdownOptions = page.locator('nb-option-list nb-option')
+        const DropdownOptionsList = await DropdownOptions.all()
+
+        const colors = {
+            'Light': 'rgb(255, 255, 255)',
+            'Dark': 'rgb(34, 43, 69)',
+            'Cosmic': 'rgb(50, 50, 89)',
+            'Corporate': 'rgb(255, 255, 255)'
+        }
+
+        for(const color in colors){
+            await Dropdown.click()
+            await DropdownOptions.getByText(color).click()
+            await page.waitForTimeout(1000)
+            await expect(Header).toHaveCSS('background-color', colors[color as keyof typeof colors])  // locator assertion
+        }
+    })
