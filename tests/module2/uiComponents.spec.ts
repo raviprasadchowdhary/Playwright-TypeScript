@@ -86,6 +86,8 @@ test.describe('Modal & Overlays - Toastr', () => {
 })
 
 test('list & dropdown', async ({page}) => {
+        page.getByRole('list')
+        page.getByRole('listitem')
         const Header = page.locator('nb-layout-header')
         const Dropdown = page.locator('ngx-header nb-select')
         const DropdownOptions = page.locator('nb-option-list nb-option')
