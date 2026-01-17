@@ -85,7 +85,8 @@ test.describe('Modal & Overlays - Toastr', () => {
         })
 })
 
-test('list & dropdown', async ({page}) => {
+test.describe('Dashboard', () => {
+    test('list & dropdown', async ({page}) => {
         page.getByRole('list')
         page.getByRole('listitem')
         const Header = page.locator('nb-layout-header')
@@ -106,6 +107,7 @@ test('list & dropdown', async ({page}) => {
             await page.waitForTimeout(1000)
             await expect(Header).toHaveCSS('background-color', colors[color as keyof typeof colors])  // locator assertion
         }
+    })
 })
 
 test.describe('Modal & Overlays - Tooltip', () => {
