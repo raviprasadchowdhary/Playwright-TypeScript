@@ -11,7 +11,7 @@ test.afterEach(async ({page}) => {
 })
 
 // ******************** Test cases *******************
-test.describe('Form Layouts page', () => {
+test.describe('Forms - Form Layouts', () => {
     
     test.beforeEach(async ({page}) => {
     await page.getByText('Forms').click()
@@ -106,4 +106,21 @@ test('list & dropdown', async ({page}) => {
             await page.waitForTimeout(1000)
             await expect(Header).toHaveCSS('background-color', colors[color as keyof typeof colors])  // locator assertion
         }
+})
+
+test.describe('Modal & Overlays - Tooltip', () => {
+    test.beforeEach(async ({page}) => {
+        page.getByText('Modal & Overlays').click()
+        page.getByText('Tooltip').click()
     })
+
+    test('tooltip', async ({page}) => {
+        const TooltipButtonTop = page.locator('ngx-tooltip nb-card-body').getByRole('button', {name: 'Top'})
+        const Tooltip = page.locator('nb-tooltip')
+
+        TooltipButtonTop.hover()
+        const TooltipText = await Tooltip.textContent()
+        expect(TooltipText).toEqual('This is a tooltip')    // general assertion
+
+    })
+})
