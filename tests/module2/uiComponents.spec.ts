@@ -32,21 +32,21 @@ test.describe('Forms - Form Layouts', () => {
         await expect(EmailUsingTheGrid).toHaveValue(EmailInput)    // locator assertion
         })
 
-    test('radio button', async ({page}) => {
-        const UsingTheGridCard = page.locator('nb-card').filter({hasText: 'Using the Grid'})
-        const RadioOption1 = UsingTheGridCard.getByRole('radio', {name: 'Option 1'})
-        const RadioOption2 = UsingTheGridCard.getByRole('radio', {name: 'Option 2'})
+        test('radio button', async ({page}) => {
+            const UsingTheGridCard = page.locator('nb-card').filter({hasText: 'Using the Grid'})
+            const RadioOption1 = UsingTheGridCard.getByRole('radio', {name: 'Option 1'})
+            const RadioOption2 = UsingTheGridCard.getByRole('radio', {name: 'Option 2'})
 
-        await RadioOption1.check({force: true})
-        await expect(RadioOption1).toBeChecked()    // locator assertion; toBeChecked
-        await expect(RadioOption2).not.toBeChecked()    // locator assertion; not.toBeChecked
-        
-        await RadioOption2.check({force: true})
-        const RadioOption2Status = await RadioOption2.isChecked()
-        const RadioOption1Status = await RadioOption1.isChecked()
-        await expect(RadioOption2Status).toBeTruthy()   // general assertion; toBeTruthy
-        await expect(RadioOption1Status).toBeFalsy()    // general assertion; toBeFalsy
-    })
+            await RadioOption1.check({force: true})
+            await expect(RadioOption1).toBeChecked()    // locator assertion; toBeChecked
+            await expect(RadioOption2).not.toBeChecked()    // locator assertion; not.toBeChecked
+            
+            await RadioOption2.check({force: true})
+            const RadioOption2Status = await RadioOption2.isChecked()
+            const RadioOption1Status = await RadioOption1.isChecked()
+            await expect(RadioOption2Status).toBeTruthy()   // general assertion; toBeTruthy
+            await expect(RadioOption1Status).toBeFalsy()    // general assertion; toBeFalsy
+        })
 })
 
 test.describe('Modal & Overlays - Toastr', () => {
@@ -55,34 +55,34 @@ test.describe('Modal & Overlays - Toastr', () => {
         page.getByText('Toastr').click()        
     })
 
-    test('checkboxes', async ({page}) => {
-        const CheckBox1 = page.getByRole('checkbox', {name: 'Hide on click'})
-        const CheckBox2 = page.getByRole('checkbox', {name: 'Prevent arising of duplicate toast'})
-        const CheckBox3 = page.getByRole('checkbox', {name: 'Show toast with icon'})
+        test('checkboxes', async ({page}) => {
+            const CheckBox1 = page.getByRole('checkbox', {name: 'Hide on click'})
+            const CheckBox2 = page.getByRole('checkbox', {name: 'Prevent arising of duplicate toast'})
+            const CheckBox3 = page.getByRole('checkbox', {name: 'Show toast with icon'})
 
-        await CheckBox1.check({force: true})
-        await CheckBox2.check({force: true})
-        await CheckBox3.check({force: true})
-        await expect(CheckBox1).toBeChecked()   // locator assertion; toBeChecked
-        await expect(CheckBox2).toBeChecked()   // locator assertion; toBeChecked
-        await expect(CheckBox3).toBeChecked()   // locator assertion; toBeChecked
+            await CheckBox1.check({force: true})
+            await CheckBox2.check({force: true})
+            await CheckBox3.check({force: true})
+            await expect(CheckBox1).toBeChecked()   // locator assertion; toBeChecked
+            await expect(CheckBox2).toBeChecked()   // locator assertion; toBeChecked
+            await expect(CheckBox3).toBeChecked()   // locator assertion; toBeChecked
 
-        await CheckBox1.uncheck({force: true})
-        await CheckBox2.uncheck({force: true})
-        await CheckBox3.uncheck({force: true})
-        expect(await CheckBox1.isChecked()).toBeFalsy() // general assertion; toBeFalsy
-        expect(await CheckBox2.isChecked()).toBeFalsy() // general assertion; toBeFalsy
-        expect(await CheckBox3.isChecked()).toBeFalsy() // general assertion; toBeFalsy
+            await CheckBox1.uncheck({force: true})
+            await CheckBox2.uncheck({force: true})
+            await CheckBox3.uncheck({force: true})
+            expect(await CheckBox1.isChecked()).toBeFalsy() // general assertion; toBeFalsy
+            expect(await CheckBox2.isChecked()).toBeFalsy() // general assertion; toBeFalsy
+            expect(await CheckBox3.isChecked()).toBeFalsy() // general assertion; toBeFalsy
 
-        const AllCheckBoxes = page.getByRole('checkbox')
-        const AllCheckBoxesList = await AllCheckBoxes.all()
-        for(const checkbox of AllCheckBoxesList){
-            await checkbox.check({force: true})
-        }
-        for(const checkbox of AllCheckBoxesList){
-            await expect(checkbox).toBeChecked()   // locator assertion; toBeChecked
-        }
-    })
+            const AllCheckBoxes = page.getByRole('checkbox')
+            const AllCheckBoxesList = await AllCheckBoxes.all()
+            for(const checkbox of AllCheckBoxesList){
+                await checkbox.check({force: true})
+            }
+            for(const checkbox of AllCheckBoxesList){
+                await expect(checkbox).toBeChecked()   // locator assertion; toBeChecked
+            }
+        })
 })
 
 test('list & dropdown', async ({page}) => {
@@ -114,13 +114,34 @@ test.describe('Modal & Overlays - Tooltip', () => {
         page.getByText('Tooltip').click()
     })
 
-    test('tooltip', async ({page}) => {
-        const TooltipButtonTop = page.locator('ngx-tooltip nb-card-body').getByRole('button', {name: 'Top'})
-        const Tooltip = page.locator('nb-tooltip')
+        test('tooltip', async ({page}) => {
+            const TooltipButtonTop = page.locator('ngx-tooltip nb-card-body').getByRole('button', {name: 'Top'})
+            const Tooltip = page.locator('nb-tooltip')
 
-        TooltipButtonTop.hover()
-        const TooltipText = await Tooltip.textContent()
-        expect(TooltipText).toEqual('This is a tooltip')    // general assertion
+            TooltipButtonTop.hover()
+            const TooltipText = await Tooltip.textContent()
+            expect(TooltipText).toEqual('This is a tooltip')    // general assertion
 
+        })
+})
+
+test.describe('Tables & Data - Smart Table', () => {
+    test.beforeEach(async ({page}) => {
+        await page.getByText('Tables & Data').click()
+        await page.getByText('Smart Table').click()
     })
+
+        test('table', async({page}) => {
+            const Row = page.locator('tbody tr')
+            const DeleteIconsOfMark = Row.filter({hasText: 'Mark'}).locator('.nb-trash')
+
+            page.on('dialog', dialog => {
+                expect(dialog.message()).toEqual('Are you sure you want to delete?')
+                dialog.accept()
+            })
+
+            expect(await Row.first()).toContainText('Mark')  // locator assertion
+            await DeleteIconsOfMark.click()
+            expect(await Row.first()).not.toContainText('Mark')  // locator assertion
+        })
 })
