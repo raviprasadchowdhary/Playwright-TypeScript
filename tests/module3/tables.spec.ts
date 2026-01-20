@@ -25,8 +25,22 @@ test.describe('Smart Table', () => {
         await AgeInput.fill('21')
         await page.locator('.nb-checkmark').click()
 
-        AgeInput = Row.getByPlaceholder('Age')
-        // expect(await AgeInput.inputValue()).toEqual('21')
+    })
+
+    test('get row based on specific value in a column', async ({page}) => {
+        const Pagination2 = page.locator('ng2-smart-table-pager').getByText('2')
+        await Pagination2.click()
+        const Row = page.getByRole('row', {name: '11'}).filter({has: page.locator('td').nth(1).getByText('11')})
+        const EditButton = Row.locator('ng2-st-tbody-edit-delete .nb-edit')
+        await EditButton.click()
+        const Firstname = page.locator('input-editor').getByPlaceholder('First Name')
+        await Firstname.clear()
+        await Firstname.fill('UpdatedName')
+        const SaveButton = page.locator('.nb-checkmark')
+        await SaveButton.click()
+        
+        expect(await Row.locator('td').nth(2).textContent()).toBe('UpdatedName')
+
 
     })
 })
