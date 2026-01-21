@@ -40,7 +40,13 @@ test.describe('Smart Table', () => {
         await SaveButton.click()
         
         expect(await Row.locator('td').nth(2).textContent()).toBe('UpdatedName')
+    })
 
+    test('search', async ({page}) => {
+        const SearchAgeInput = page.locator('input-filter').getByPlaceholder('Age')
+        await SearchAgeInput.fill('20')
 
+        const rowCount = await page.getByRole('row').count()
+        console.log(`rowCount: ${rowCount}`)
     })
 })
