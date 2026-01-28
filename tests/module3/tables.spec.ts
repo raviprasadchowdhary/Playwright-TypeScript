@@ -49,4 +49,30 @@ test.describe('Smart Table', () => {
         const rowCount = await page.getByRole('row').count()
         console.log(`rowCount: ${rowCount}`)
     })
+
+    test('search & verify', async ({page}) => {
+        const InputFilterAge = page.getByPlaceholder('Age')
+
+        const Ages = ['20', '30', '40', '250']
+
+        for (let age of Ages){
+            await InputFilterAge.clear()
+            await InputFilterAge.fill(age)
+            
+            await page.waitForTimeout(500)
+            const ResultRows = page.locator('tbody tr')
+            for (let row of await ResultRows.all()){
+
+                if (age === '250'){
+                    const NoDataTd = await page.getByRole('table')
+                    expect(await NoDataTd.textContent()).toContain('No data found')
+                    continue
+                }
+
+                const AgeTd = await row.locator('td').last().textContent()
+                expect(AgeTd).toEqual(age)
+            }
+        }
+
+    })
 })
