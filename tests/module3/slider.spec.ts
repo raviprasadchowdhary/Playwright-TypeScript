@@ -33,6 +33,7 @@ test.describe('Slider tests', () => {
         await SliderBox.scrollIntoViewIfNeeded()
 
         const Box = await SliderBox.boundingBox()
+        if (!Box) throw new Error('Element not visible')
         const x = Box.x + Box.width/2
         const y = Box.y + Box.height/2
 
