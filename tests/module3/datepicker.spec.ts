@@ -23,4 +23,16 @@ test.describe('Datepicker tests', () => {
         const CurrentMonth = CurrentDate.toLocaleString('default', {month: 'short'})
         expect(DatepickerInput).toHaveValue('' + CurrentMonth + ' 1, ' + CurrentYear)
     })
+
+    test('', async ({page}) => {
+        const DatepickerInput = page.getByPlaceholder('Form Picker')
+        await DatepickerInput.click()
+
+        let date = new Date()
+        const ExpectedDate = date.getDate().toString()
+
+        await page.locator('[class="day-cell ng-star-inserted"]').getByText(ExpectedDate, {exact: true}).click()
+        expect(DatepickerInput).toHaveValue(ExpectedDate)
+    })
+
 })
