@@ -26,4 +26,22 @@ test.describe('Slider tests', () => {
         const SliderBox = page.locator('[tabtitle="Temperature"] ngx-temperature-dragger [class="value temperature h1"]')
         expect(SliderBox).toContainText('30')
     })
+    
+
+    test('move slider by mouse movement', async ({page}) => {
+        const SliderBox = page.locator('[tabtitle="Temperature"] ngx-temperature-dragger')
+        await SliderBox.scrollIntoViewIfNeeded()
+
+        const Box = await SliderBox.boundingBox()
+        const x = Box.x + Box.width/2
+        const y = Box.y + Box.height/2
+
+        await page.mouse.move(x, y)
+        await page.mouse.down()
+        await page.mouse.move(x - (Box.width/2), y)
+        await page.mouse.move(x - (Box.width/2), y+(Box.height/2))
+        await page.mouse.up()
+
+        expect(SliderBox).toContainText('12')
+    })
 })
