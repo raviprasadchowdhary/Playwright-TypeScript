@@ -1,4 +1,4 @@
-import {test} from 'playwright/test'
+import {expect, test} from 'playwright/test'
 
 // ******************* Setup hooks *******************
 test.beforeEach(async({page}) => {
@@ -18,5 +18,18 @@ test.describe('drag & drop', () => {
         const Target = Frame.locator('#trash')
 
         await Source.dragTo(Target)
+    })
+    
+    test('drag & drop in iFrame with mouse', async ({page}) => {
+        const Frame = page.frameLocator('[rel-title="Photo Manager"] iframe')
+        const Source = Frame.locator('li').filter({hasText: 'High Tatras 2'})
+        const Target = Frame.locator('#trash')
+
+        await Source.hover()
+        await page.mouse.down()
+        await Target.hover()
+        await page.mouse.up()
+
+        await expect(Frame.locator('#trash li h5')).toContainText('High Tatras 2')
     })
 })
