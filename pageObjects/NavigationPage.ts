@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test'
 
-export class NavigateTo {
+export class NavigationPage {
     readonly page: Page
 
     constructor(page: Page){
