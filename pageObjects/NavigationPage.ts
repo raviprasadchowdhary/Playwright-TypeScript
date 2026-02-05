@@ -1,49 +1,48 @@
-import { Page } from '@playwright/test'
+import { Locator, Page } from '@playwright/test'
 
 export class NavigationPage {
     readonly page: Page
+    readonly formLayoutsMenuSubItem: Locator
+    readonly datePickerMenuSubItem: Locator
+    readonly smartTableMenuSubItem: Locator
+    readonly tostrMenuSubItem: Locator
+
+
 
     constructor(page: Page){
         this.page = page
+        this.formLayoutsMenuSubItem = page.getByText('Form Layouts')
+        this.datePickerMenuSubItem = page.getByText('Datepicker')
+        this.smartTableMenuSubItem = page.getByText('Smart Table')
+        this.tostrMenuSubItem = page.getByText('Toastr')
     }
 
     async formLayoutsPage(){
-        await this.menuItemClick('Forms')
-        console.log('Navigating to Form Layouts page')
-        await this.page.getByText('Form Layouts').click()
-        console.log('Navigated to Form Layouts page')
+        await this.menuItemClick('Forms');
+        await this.formLayoutsMenuSubItem.click();
     }
 
     async datePickerPage(){
-        await this.menuItemClick('Forms')
-        console.log('Navigating to Datepicker page')
-        await this.page.getByText('Datepicker').click()
-        console.log('Navigated to Datepicker page')
+        await this.menuItemClick('Forms');                                          
+        await this.datePickerMenuSubItem.click();                            
     }
 
     async smartTablePage(){
-        await this.menuItemClick('Tables & Data')
-        console.log('Navigating to Smart Table page')
-        await this.page.getByText('Smart Table').click()
-        console.log('Navigated to Smart Table page')
+        await this.menuItemClick('Tables & Data');                                  
+        await this.smartTableMenuSubItem.click();
     }
 
     async tostrPage(){
-        await this.menuItemClick('Modal & Overlays')
-        console.log('Navigating to Toastr page')
-        await this.page.getByText('Toastr').click()
-        console.log('Navigated to Toastr page')
+        await this.menuItemClick('Modal & Overlays');                               
+        await this.tostrMenuSubItem.click();                                
     }
 
     private async menuItemClick(menuItem: string){
-        const menuItemElement = this.page.getByTitle(menuItem)
-        console.log(`menuItem: ${menuItem}`)
-        const currentState = await menuItemElement.getAttribute('aria-expanded') 
-        console.log(`currentState: ${currentState}`)
+        const menuItemElement = this.page.getByTitle(menuItem);                     
+        const currentState = await menuItemElement.getAttribute('aria-expanded');   
 
         if(currentState == 'false'){
-            await menuItemElement.click()
-            console.log(`${menuItem} menu expanded`)
+            await menuItemElement.click();                                          
         }else{
             console.log(`${menuItem} menu already expanded`)
         }
