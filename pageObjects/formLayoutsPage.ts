@@ -16,6 +16,12 @@ export class FormLayoutsPage{
         await UsingTheGridFrom.getByRole('button', {name: 'Sign in'}).click()
     }
 
+    /**
+     * This method fills the inline form with the provided name, email and checkbox statusm and submits the form
+     * @param name -> Name to be filled in the form, it can be Firstname Lastname or Fullname
+     * @param email -> Email to be filled in the form, it can be any valid email address
+     * @param checkboxStatus -> Status of the checkbox, it can be true or false
+     */
     async submitInlineFormWithNameEmailAndCheckbox(name: string, email: string, checkboxStatus: boolean){
         const InlineForm = this.page.locator('nb-card').filter({hasText: 'Inline form'})
         await InlineForm.getByPlaceholder('Jane Doe').fill(name)
