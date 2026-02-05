@@ -31,3 +31,10 @@ test('parameterized test - using the grid', async ({page}) => {
     await navigateTo.formLayoutsPage()
     await onFromLayoutsPage.submitusingTheGridWithEmailPassworsAndRadios('tset@test.com', 'password123', 'Option 2')
 })
+
+test('parameterized test - inline form', async ({page}) => {
+    const navigateTo = new NavigationPage(page)
+    const onFromLayoutsPage = new FormLayoutsPage(page)
+    await navigateTo.formLayoutsPage()
+    await onFromLayoutsPage.submitInlineFormWithNameEmailAndCheckbox('Raviprasad Chowdhary', 'Test@gmail.com', true)
+})
