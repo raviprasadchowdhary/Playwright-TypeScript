@@ -1,10 +1,16 @@
 import { test } from "@playwright/test"
 import { NavigationPage } from "../../pageObjects/NavigationPage"
+import { FormLayoutsPage } from "../../pageObjects/formLayoutsPage"
 
 //******************** Setup hooks *******************
 test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:4200/')
 })
+
+//******************* Teardown hooks *******************
+// test.afterEach(async ({ page }) => {
+//     await page.close()
+// })
 
 //******************** Test cases *******************
 test('navigate to forms layout page', async ({page}) => {
@@ -16,4 +22,12 @@ test('navigate to forms layout page', async ({page}) => {
     await navigateTo.tostrPage()
     await page.waitForTimeout(1000)
     await navigateTo.smartTablePage()
+})
+
+test('parameterized test - using the grid', async ({page}) => {
+    const navigateTo = new NavigationPage(page)
+    const onFromLayoutsPage = new FormLayoutsPage(page)
+
+    await navigateTo.formLayoutsPage()
+    await onFromLayoutsPage.submitusingTheGridWithEmailPassworsAndRadios('tset@test.com', 'password123', 'Option 2')
 })
