@@ -1,6 +1,7 @@
 import { test } from "@playwright/test"
 import { NavigationPage } from "../../pageObjects/NavigationPage"
 import { FormLayoutsPage } from "../../pageObjects/formLayoutsPage"
+import { DatePickerPage } from "../../pageObjects/datePickerPage"
 
 //******************** Setup hooks *******************
 test.beforeEach(async ({ page }) => {
@@ -37,4 +38,13 @@ test('parameterized test - inline form', async ({page}) => {
     const onFromLayoutsPage = new FormLayoutsPage(page)
     await navigateTo.formLayoutsPage()
     await onFromLayoutsPage.submitInlineFormWithNameEmailAndCheckbox('Raviprasad Chowdhary', 'Test@gmail.com', true)
+})
+
+test('parameterized test - date picker', async ({page}) => {
+    test.setTimeout(60000)
+    const navigateTo = new NavigationPage(page)
+    const onDatePickerPage = new DatePickerPage(page)
+
+    await navigateTo.datePickerPage()
+    await onDatePickerPage.selectCommonDatepickerToADateFromToday(105)
 })
