@@ -40,11 +40,20 @@ test('parameterized test - inline form', async ({page}) => {
     await onFromLayoutsPage.submitInlineFormWithNameEmailAndCheckbox('Raviprasad Chowdhary', 'Test@gmail.com', true)
 })
 
-test('parameterized test - date picker', async ({page}) => {
+test('parameterized test - Common Datepicker', async ({page}) => {
     test.setTimeout(60000)
     const navigateTo = new NavigationPage(page)
     const onDatePickerPage = new DatePickerPage(page)
 
     await navigateTo.datePickerPage()
     await onDatePickerPage.selectCommonDatepickerToADateFromToday(105)
+})
+
+test('parameterized test - Datepicker With Range', async ({page}) => {
+    test.setTimeout(60000)
+    const navigateTo = new NavigationPage(page)
+    const onDatePickerPage = new DatePickerPage(page)
+
+    await navigateTo.datePickerPage()
+    await onDatePickerPage.selectDatepickerWithRangeFromAndToADateFromToday(101, 121)
 })
