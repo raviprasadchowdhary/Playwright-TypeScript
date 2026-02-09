@@ -10,18 +10,24 @@ export class DatePickerPage{
     async selectCommonDatepickerToADateFromToday(daysFromToday: number){
         const inputField = this.page.locator('nb-card').filter({hasText: 'Common Datepicker'}).locator('input')
         await inputField.click()
-        await this.selectFutureDateIncalendar(daysFromToday)
+        const dateToSelect = await this.selectFutureDateIncalendar(daysFromToday)
         // Wait for the input field to have the expected value
         await this.page.waitForTimeout(500) // Small wait for datepicker to close and update
         const inputFiledValue = await inputField.inputValue(); console.log(`inputFiledValue: ${inputFiledValue}`)
+
+        expect(inputFiledValue).toBe(dateToSelect)
     }
 
     async selectDatepickerWithRangeFromAndToADateFromToday(startDateDaysFromToday: number, endDateDaysFromToday: number){
         const inputField = this.page.locator('nb-card').filter({hasText: 'Datepicker With Range'}).locator('input')
         await inputField.click()
-        await this.selectFutureDateIncalendar(startDateDaysFromToday)
-        await this.selectFutureDateIncalendar(endDateDaysFromToday)
+        const startDateToBeSelected = await this.selectFutureDateIncalendar(startDateDaysFromToday)
+        const endDateToBeSelected = await this.selectFutureDateIncalendar(endDateDaysFromToday)
         
+        await this.page.waitForTimeout(500) // Small wait for datepicker to close and update
+        expect(await inputField.inputValue()).toContain(startDateToBeSelected)
+        expect(await inputField.inputValue()).toContain(endDateToBeSelected)
+        expect(await inputField.inputValue()).toBe(`${startDateToBeSelected} - ${endDateToBeSelected}`)
     }
 
     private async selectFutureDateIncalendar(daysFromToday: number){
@@ -48,5 +54,6 @@ export class DatePickerPage{
         console.log(`Found target month/year: ${currentCalendarMonthYear}`)
 
         await this.page.locator('nb-calendar-picker').getByText(targetDay.toString(), {exact: true}).click()
+        return dateToSelect
     }
 }
