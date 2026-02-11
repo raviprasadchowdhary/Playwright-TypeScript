@@ -1,5 +1,5 @@
 import { test } from "@playwright/test"
-import { NavigationPage } from "../../pageObjects/navigationPage"
+import { NavigationPage } from "../../pageObjects/NavigationPage"
 import { FormLayoutsPage } from "../../pageObjects/formLayoutsPage"
 import { DatePickerPage } from "../../pageObjects/datePickerPage"
 import { PageManager } from "../../pageObjects/pageManager"
@@ -61,7 +61,7 @@ test('parameterized test - Datepicker With Range', async ({page}) => {
 
 test('navigate to forms layout page - using page manager', async ({page}) => {
     const pageManager = new PageManager(page)
-    await pageManager.navigateTo().formLayoutsPage(); await page.waitForTimeout(1000)
+    await pageManager.navigateTo().formLayoutsPage(); await pageManager.onFormLayoutsPage().waitForNumberofSeconds(1)
     await pageManager.navigateTo().datePickerPage(); await page.waitForTimeout(1000)
     await pageManager.navigateTo().tostrPage(); await page.waitForTimeout(1000)
     await pageManager.navigateTo().smartTablePage(); await page.waitForTimeout(1000)
