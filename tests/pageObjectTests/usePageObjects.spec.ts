@@ -72,3 +72,9 @@ test('parameterized test - using the grid - using page manager', async ({page}) 
     await pageManager.navigateTo().formLayoutsPage()
     await pageManager.onFormLayoutsPage().submitusingTheGridWithEmailPassworsAndRadios('tset@test.com', 'password123', 'Option 2')
 })
+
+test('parameterized test - inline form - using page manager', async ({page}) => {
+    const pageManager = new PageManager(page)
+    await pageManager.navigateTo().formLayoutsPage()
+    await pageManager.onFormLayoutsPage().submitInlineFormWithNameEmailAndCheckbox('Raviprasad Chowdhary', 'Test@gmail.com', true)
+})
