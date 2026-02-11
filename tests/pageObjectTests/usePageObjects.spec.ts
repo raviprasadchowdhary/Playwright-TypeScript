@@ -65,5 +65,10 @@ test('navigate to forms layout page - using page manager', async ({page}) => {
     await pageManager.navigateTo().datePickerPage(); await page.waitForTimeout(1000)
     await pageManager.navigateTo().tostrPage(); await page.waitForTimeout(1000)
     await pageManager.navigateTo().smartTablePage(); await page.waitForTimeout(1000)
-}
-)
+})
+
+test('parameterized test - using the grid - using page manager', async ({page}) => {
+    const pageManager = new PageManager(page)
+    await pageManager.navigateTo().formLayoutsPage()
+    await pageManager.onFormLayoutsPage().submitusingTheGridWithEmailPassworsAndRadios('tset@test.com', 'password123', 'Option 2')
+})
