@@ -1,5 +1,5 @@
 import { Page } from "@playwright/test";
-import { NavigationPage } from "./NavigationPage";
+import { NavigationPage } from "./navigationPage";
 import { DatePickerPage } from "./datePickerPage";
 import { FormLayoutsPage } from "./formLayoutsPage";
 
