@@ -1,6 +1,55 @@
 # Playwright TypeScript Setup Guide
 
-## Initial Setup
+## Prerequisites
+
+### 1. Install Visual Studio Code
+Download and install VS Code from [https://code.visualstudio.com/](https://code.visualstudio.com/)
+
+### 2. Install Node.js
+Download and install Node.js (LTS version) from [https://nodejs.org/](https://nodejs.org/)
+
+### 3. Install Playwright Extension in VS Code
+- Open VS Code
+- Go to Extensions (Ctrl+Shift+X)
+- Search for "Playwright Test for VSCode"
+- Click Install
+
+## Setting Up the Angular Application Under Test
+
+This project requires a local Angular application to run tests against.
+
+### Clone the Angular Practice Application
+
+```bash
+git clone https://github.com/bondar-artem/pw-practice-app.git
+```
+
+### Install Dependencies
+
+Open the cloned project in VS Code and run in the terminal:
+
+```bash
+npm install --force
+```
+
+### Start the Application
+
+Build and start the Angular application:
+
+```bash
+npm start
+```
+
+The application will be available at: **http://localhost:4200/**
+
+**Important Notes:**
+- Keep the terminal running while testing - the application needs to stay active
+- If you close the terminal or press `Ctrl+C`, restart with `npm start`
+- The application must be running before executing Playwright tests
+
+## Initial Playwright Setup
+
+### For a New Project
 
 To create a new Playwright project with TypeScript:
 
@@ -13,6 +62,20 @@ This command will:
 - Create the configuration file `playwright.config.ts`
 - Set up the `tests` folder structure
 - Install browsers for testing
+
+### For This Existing Project
+
+If you've cloned this repository, install dependencies:
+
+```bash
+npm install
+```
+
+Then install Playwright browsers:
+
+```bash
+npx playwright install
+```
 
 ## Running Tests
 
@@ -100,17 +163,93 @@ test.skip('has title', async ({ page }) => {
 
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/Playwright/);
-});
+## Project Structure
+
+```
+├── playwright.config.ts           # Playwright configuration
+├── pageObjects/                   # Page Object Model classes
+│   ├── NavigationPage.ts          # Navigation helper methods
+│   ├── FormLayoutsPage.ts         # Form layouts page actions
+│   └── DatePickerPage.ts          # Datepicker page actions
+├── tests/                         # Test files directory
+│   ├── module1/                   # Basic locator and assertion tests
+│   ├── module2/                   # UI components tests
+│   ├── module3/                   # Advanced interactions tests
+│   └── pageObjectTests/           # Tests using Page Object Model
+│       └── usePageObjects.spec.ts
+├── playwright-report/             # Generated HTML reports
+└── test-results/                  # Test execution results
 ```
 
-### Run Only One Test
+## Page Object Model
 
-Use `test.only()` to run a single test and skip all others:
+This project uses the Page Object Model (POM) design pattern to organize test code.
+
+### What is Page Object Model?
+
+Page Object Model is a design pattern that:
+- Creates an object repository for web elements
+- Separates test logic from page-specific code
+- Makes tests more maintainable and reusable
+- Reduces code duplication
+
+### Example: NavigationPage
 
 ```typescript
-test.only('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+// pageObjects/NavigationPage.ts
+import { Page } from '@playwright/test'
 
+export class NavigationPage {
+    readonly page: Page
+
+    constructor(page: Page){
+        this.page = page
+    }
+
+    async formLayoutsPage(){
+        await this.menuItemClick('Forms')
+        await this.page.getByText('Form Layouts').click()
+    }
+
+    async datePickerPage(){
+        await this.menuItemClick('Forms')
+        await this.page.getByText('Datepicker').click()
+    }
+
+    private async menuItemClick(menuItem: string){
+        const menuItemElement = this.page.getByTitle(menuItem)
+        const currentState = await menuItemElement.getAttribute('aria-expanded')
+
+        if(currentState === 'false'){
+            await menuItemElement.click()
+        }
+    }
+}
+```
+
+### Using Page Objects in Tests
+
+```typescript
+// tests/pageObjectTests/usePageObjects.spec.ts
+import { test } from "@playwright/test"
+import { NavigationPage } from "../../pageObjects/NavigationPage"
+
+test('navigate to forms layout page', async ({page}) => {
+    await page.goto('http://localhost:4200/')
+    
+    const navigateTo = new NavigationPage(page)
+    await navigateTo.formLayoutsPage()
+})
+```
+
+### Benefits
+
+- **Reusability**: Use the same page object methods across multiple tests
+- **Maintainability**: Update locators in one place when UI changes
+- **Readability**: Tests are more descriptive and easier to understand
+- **Encapsulation**: Hide implementation details from tests
+
+## Additional Resources
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/Playwright/);
 });
