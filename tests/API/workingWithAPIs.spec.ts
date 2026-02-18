@@ -10,6 +10,18 @@ test.beforeEach(async ({page}) => {
             body: JSON.stringify(mockedApiResponse)
         })
     })
+
+    await page.route('*/**/articles*', async route => {
+        const response = await route.fetch()
+        let responseJson = await response.json()
+        responseJson.articles[0].title = "This is test title"
+        responseJson.articles[0].description = "This is test description"
+
+        await route.fulfill({
+            body: JSON.stringify(responseJson)
+        })
+    })
+
     await page.goto('https://conduit.bondaracademy.com/')
 })
 
@@ -43,5 +55,15 @@ test.describe('working with APIs', () => {
         expect(allTagsTrimmed).toContain('Raviprasad')
     })
 
+    test('modify article title and description', async ({page}) => {
+        await page.waitForLoadState('networkidle')
+        
+        // Verify the first article has the modified title and description
+        const firstArticleTitle = await page.locator('app-article-list app-article-preview').nth(0).locator('h1').textContent()
+        const firstArticleDescription = await page.locator('app-article-list app-article-preview').nth(0).locator('p').textContent()
+        expect(firstArticleTitle).toBe('This is test title')
+        expect(firstArticleDescription).toBe('This is test description')
+        
+    })
 
 })
