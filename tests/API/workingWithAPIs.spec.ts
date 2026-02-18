@@ -1,15 +1,10 @@
 import {expect, test} from 'playwright/test'
+import mockedApiResponse from '../../testdata/mockedApiResponse.json'
 
 // ******************* Setup hooks *******************
 test.beforeEach(async ({page}) => {
     await page.route('*/**/api/tags', async route => {
-        const mockedApiResponse = {
-            "tags": [
-                "Automation",
-                "Playwright",
-                "Raviprasad"
-            ]
-        }
+
         console.log('Route intercepted!')
         await route.fulfill({
             body: JSON.stringify(mockedApiResponse)
