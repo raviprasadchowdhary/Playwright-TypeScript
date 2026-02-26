@@ -5,13 +5,19 @@ import { ApiData } from "./apiData"
 const apiData = new ApiData()
 
 // Helper function to get token
-export async function loginAndGetToken(request: APIRequestContext): Promise<string> {
+export async function loginAndGetToken(request: APIRequestContext): Promise<string> {    
+    const responseBody = await login(request)
+    return responseBody.user.token
+}
+
+// Helper function to login
+export async function login(request: APIRequestContext): Promise<any> {
     const response = await request.post(`${apiData.baseURL}/users/login`, {
-    data: apiData.loginData
+        data: apiData.loginData
     })
 
     const responseBody = await response.json()
-    return responseBody.user.token
+    return responseBody
 }
 
 // Helper function to publish article
