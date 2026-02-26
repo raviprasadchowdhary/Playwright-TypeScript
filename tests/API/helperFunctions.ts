@@ -26,3 +26,14 @@ export async function publishArticle(request:APIRequestContext, token: string): 
         const responseBody = await response.json()
         return responseBody
 }
+
+// Helper function to get article by slug
+export async function getArticle(request: APIRequestContext, token: string, slug: string): Promise<any> {
+    const response = await request.get(`${apiData.baseURL}/articles/${slug}`, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })
+    const getArticleResponseBody = await response.json()
+    return getArticleResponseBody
+}
