@@ -43,3 +43,35 @@ export async function getArticle(request: APIRequestContext, token: string, slug
     const getArticleResponseBody = await response.json()
     return getArticleResponseBody
 }
+
+// Helper function to post comment
+export async function postComment(request: APIRequestContext, token: string, slug: string, commentData: any): Promise<any>{
+    const response = await request.post(`${apiData.baseURL}/articles/${slug}/comments`, {
+        data: apiData.commentData,
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })
+    const responseBody = await response.json()
+    return responseBody.comment.id
+}
+
+// helper function to get comments for an article
+export async function getComments(request: APIRequestContext, token: string, slug: string): Promise<any>{
+    const response = await request.get(`${apiData.baseURL}/articles/${slug}/comments`,{
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })
+    const responseBody = await response.json()
+    return responseBody
+}
+
+// delete comment
+export async function deleteComment(request: APIRequestContext, token: string, slug: string, commentId: number): Promise<any>{
+    await request.delete(`${apiData.baseURL}/articles/${slug}/comments/${commentId}`,{
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })    
+}

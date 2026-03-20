@@ -1,7 +1,7 @@
 import test from 'playwright/test'
 import { assert } from 'node:console'
 import { ApiData } from './apiData'
-import {loginAndGetToken, publishArticle, getArticle, login} from './helperFunctions'
+import {loginAndGetToken, publishArticle, getArticle, login, postComment, getComments, deleteComment} from './helperFunctions'
 const apiData = new ApiData()
 
 test.describe('API request tests', () => {
@@ -41,5 +41,30 @@ test.describe('API request tests', () => {
         assert(getArticleResponseBody.article.description === publishedArticleData.article.description, `Article description does not match; expected: ${publishedArticleData.article.description}, actual: ${getArticleResponseBody.article.description}`)
         assert(getArticleResponseBody.article.body === publishedArticleData.article.body, `Article body does not match; expected: ${publishedArticleData.article.body}, actual: ${getArticleResponseBody.article.body}`)
         assert(JSON.stringify(getArticleResponseBody.article.tagList) === JSON.stringify(publishedArticleData.article.tagList), `Article tagList does not match; expected: ${JSON.stringify(publishedArticleData.article.tagList)}, actual: ${JSON.stringify(getArticleResponseBody.article.tagList)}`)
+    })
+
+    test('login, publish article & manage comments', async ({request}) => {
+        // login and get token
+        const token = await loginAndGetToken(request)
+        // publish article
+        const publishedArticleData = await publishArticle(request, token)
+        // post comment
+        const commentId = await postComment(request, token, publishedArticleData.article.slug, apiData.commentData)
+        // get comments
+        const comments = await getComments(request, token, publishedArticleData.article.slug)
+        // list comment ids
+        const commentIds = comments.comments.map((comment: any) => comment.id)
+        console.log('Comment IDs: ', commentIds)
+        // assertions
+        assert(commentIds.includes(commentId), 'Comment ID not found in list of comments for the article')
+        // delete comment
+        deleteComment(request, token, publishedArticleData.article.slug, commentId)
+        // get comments again
+        const commentsAfterDeletion = await getComments(request, token, publishedArticleData.article.slug)
+        // list comment ids again
+        const commentIdsAfterDeletion = commentsAfterDeletion.comments.map((comment: any) => comment.id)
+        console.log('Comment IDs after deletion: ', commentIdsAfterDeletion)
+        // assertion to verify comment deletion
+        assert(!commentIdsAfterDeletion.includes(commentId), 'Comment ID still found in list of comments for the article after deletion')
     })
 })

@@ -20,6 +20,13 @@ export class ApiData {
                         ]
                     }
                 }
+
+    commentData = {
+                    "comment": {
+                    "body": "comment - by Raviprasad"
+ 
+                }
+    }
 }
 
 function random6Digits(): string{
