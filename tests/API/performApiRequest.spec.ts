@@ -1,7 +1,7 @@
 import test from 'playwright/test'
 import { assert } from 'node:console'
 import { ApiData } from './apiData'
-import {loginAndGetToken, publishArticle, getArticle, login, postComment, getComments, deleteComment} from './helperFunctions'
+import {loginAndGetToken, publishArticle, getArticle, login, postComment, getComments, deleteComment, deleteArticle} from './helperFunctions'
 const apiData = new ApiData()
 
 test.describe('API request tests', () => {
@@ -66,5 +66,26 @@ test.describe('API request tests', () => {
         console.log('Comment IDs after deletion: ', commentIdsAfterDeletion)
         // assertion to verify comment deletion
         assert(!commentIdsAfterDeletion.includes(commentId), 'Comment ID still found in list of comments for the article after deletion')
+    })
+
+    test('login, publish article & manage article', async ({request}) => {
+        // login and get token
+        const token = await loginAndGetToken(request)
+        // publish article
+        const publishedArticleData = await publishArticle(request, token)
+        // get article using slug
+        const getArticleResponseBody = await getArticle(request, token, publishedArticleData.article.slug)
+        // assertions
+        assert(getArticleResponseBody.article.title === publishedArticleData.article.title, `Article title does not match; expected: ${publishedArticleData.article.title}, actual: ${getArticleResponseBody.article.title}`)
+        // delete article using slug
+        await deleteArticle(request, token, publishedArticleData.article.slug)
+        // get article again using slug - this should ideally return an error or a response indicating that the article is not found
+        try {
+            const getArticleResponseBodyAfterDeletion = await getArticle(request, token, publishedArticleData.article.slug)
+            assert(getArticleResponseBodyAfterDeletion.errors.article[0] === 'not found', `Expected article not found error, but got: ${JSON.stringify(getArticleResponseBodyAfterDeletion)}`)
+        } catch (error) {
+            assert(error instanceof Error, `Expected an error to be thrown when trying to get a deleted article, but got: ${error}`)
+            console.log('Error message when trying to get deleted article: ', error)
+        }
     })
 })

@@ -75,3 +75,12 @@ export async function deleteComment(request: APIRequestContext, token: string, s
         }
     })    
 }
+
+// delete article
+export async function deleteArticle(request:APIRequestContext, token: string, slug: string): Promise<any>{
+    await request.delete(`${apiData.baseURL}/articles/${slug}`, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })    
+}
